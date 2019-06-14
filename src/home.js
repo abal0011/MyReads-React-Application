@@ -12,6 +12,20 @@ export class Home extends Component {
             this.setState(() => ({ books }))
         })
     }
+    handleChange = (book, event) => {
+        let e = event.target.value;
+        BooksAPI.update(book, e).then(res => {
+            book.shelf = e;
+            this.updateBooks();
+        })
+    }
+
+    updateBooks() {
+        BooksAPI.getAll().then((books) => {
+            this.setState({ books })
+        })
+    }
+
     render() {
         return (
             <div className="list-books">
@@ -20,9 +34,9 @@ export class Home extends Component {
                 </div>
                 <div className="list-books-content">
                     <div>
-                        <BookShelf shelf="Currently Reading" books={this.state.books.filter(book => book.shelf === 'currentlyReading')} />
-                        <BookShelf shelf="Want to read" books={this.state.books.filter(book => book.shelf === 'wantToRead')} />
-                        <BookShelf shelf="Read" books={this.state.books.filter(book => book.shelf === 'read')} />
+                        <BookShelf handleChange={this.handleChange} shelf="Currently Reading" books={this.state.books.filter(book => book.shelf === 'currentlyReading')} />
+                        <BookShelf handleChange={this.handleChange} shelf="Want to read" books={this.state.books.filter(book => book.shelf === 'wantToRead')} />
+                        <BookShelf handleChange={this.handleChange} shelf="Read" books={this.state.books.filter(book => book.shelf === 'read')} />
 
                     </div>
                     <div className="open-search">
