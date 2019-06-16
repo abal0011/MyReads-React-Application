@@ -2,21 +2,42 @@ import React, { Component } from 'react'
 import { Route, Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import BookShelf from './BookShelf'
+import { PropTypes } from 'prop-types'
+import { debounce } from 'lodash'
 
 export class Search extends Component {
     state = { books: [] }
 
+    static PropTypes = {
+        books: PropTypes.array
+    }
+    handleChange = (book, event) => {
+        let e = event.target.value;
+        BooksAPI.update(book, e).then(res => {
+            book.shelf = e;
+            this.updateBooks();
+        })
+    }
+
+    updateBooks() {
+        BooksAPI.getAll().then((books) => {
+            this.setState({ books })
+        })
+    }
     searchQuery = (event) => {
         const query = event.target.value
         if (query !== '') {
             BooksAPI.search(query, 20).then(books => {
-                if (!books || books.error) {
+                if (!books) {
                     this.setState({ books: [] })
 
                 }
                 else {
+                    books = books.filter((book) => (book.imageLinks))
+                    books = this.updateShelf(books)
                     this.setState({ books })
                 }
+
             })
         }
         else {
@@ -25,20 +46,23 @@ export class Search extends Component {
 
     }
 
-    updateShelf = (book, shelf) => {
-        console.log(book, shelf)
-        BooksAPI.update(book, shelf).then(
-            this.setState(oldState => ({
-                books: oldState.books.map(b => {
-                    if (b.id === book.id) {
-                        b.shelf = shelf;
-                    }
-                    return b;
-                })
-            })
-            )
-        )
-    }
+    updateShelf = debounce((books) => {
+
+        let all_Books = this.state.books
+        for (let book of books) {
+            for (let b of all_Books) {
+                if (b.id === book.id) {
+                    book.shelf = b.shelf
+                }
+            }
+        }
+        for (let book of books) {
+            book.shelf = "none"
+        }
+
+
+        return books
+    }, 500)
     render() {
         return (
             <div className="search-books">
@@ -60,9 +84,11 @@ export class Search extends Component {
                     </div>
                 </div>
                 <div className="search-books-results">
-                    {this.state.book = !undefined &&
-                        <BookShelf books={this.state.books} />
-                    }
+                    <ol className="books-grid">
+                        {this.state.books.length > 0 && <BookShelf handleChange={this.handleChange} books={this.state.books} />}
+                    </ol>
+
+
                 </div>
             </div>
         )

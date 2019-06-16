@@ -30,10 +30,11 @@ export class Home extends Component {
         return (
             <div className="list-books">
                 <div className="list-books-title">
-                    <h1>MyReads</h1>
+                    <h1>MyReads Application</h1>
                 </div>
                 <div className="list-books-content">
                     <div>
+
                         <BookShelf handleChange={this.handleChange} shelf="Currently Reading" books={this.state.books.filter(book => book.shelf === 'currentlyReading')} />
                         <BookShelf handleChange={this.handleChange} shelf="Want to read" books={this.state.books.filter(book => book.shelf === 'wantToRead')} />
                         <BookShelf handleChange={this.handleChange} shelf="Read" books={this.state.books.filter(book => book.shelf === 'read')} />
