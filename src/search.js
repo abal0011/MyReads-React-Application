@@ -5,11 +5,14 @@ import BookShelf from './BookShelf'
 import { PropTypes } from 'prop-types'
 
 export class Search extends Component {
-    state = { books: [] }
+    state = {
+        books: []
+    }
 
     static PropTypes = {
         books: PropTypes.array
     }
+
     handleChange = (book, event) => {
         let e = event.target.value;
         BooksAPI.update(book, e).then(res => {
@@ -45,22 +48,19 @@ export class Search extends Component {
 
     }
 
-    updateShelf = (books) => {
+    updateShelf = (Tempbook) => {
 
-        let all_Books = this.state.books
-        for (let book of books) {
+        let all_Books = this.props.books
+        for (let book of Tempbook) {
             for (let b of all_Books) {
                 if (b.id === book.id) {
                     book.shelf = b.shelf
                 }
+                else
+                    book.shelf = "none"
             }
         }
-        for (let book of books) {
-            book.shelf = "none"
-        }
-
-
-        return books
+        return Tempbook
     }
     render() {
         return (
