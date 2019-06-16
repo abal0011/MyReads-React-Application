@@ -1,9 +1,29 @@
 # MyReads Project
 
 Project Forked from udacity MyReads project. Using the cloned project, I have completely changed the static web application into a Modern framework React Application that consists of React Components, States, Props, PropTypes, Forms and Router. 
+This is a straightforward React app that enables users to organize their books and monitor them. 
 
-Of course, you are free to start this project from scratch if you wish! Just be sure to use [Create React App](https://github.com/facebookincubator/create-react-app) to bootstrap the project.
+## How to start
 
+* Clone the repository  by git clone "URL" alternate-Name
+
+* Install dependencies with npm install
+
+* Run npm start in the root directory to start the server and launch the app
+
+## How does the App work
+### Home Page
+
+You have three columns when the app is opened on the browser
+* Currently Reading
+* Book you want to read
+* read
+
+### Search Page
+Using the green arrow at the bottom right of each book, you can sort books among these three classifications-as well as remove them. You can also use the search bar at the top to search for fresh books to add to one of these lists.
+
+### My Contribution
+The app does have a start plate, I have made my contribution and by checking the commits to this repo, my work is elaborated. 
 ## TL;DR
 
 To get started developing right away:
